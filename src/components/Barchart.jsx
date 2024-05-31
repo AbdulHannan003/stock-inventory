@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Bar } from 'react-chartjs-2';
 import Dropdown from './Dropdown';
-import Chart, { scales } from 'chart.js/auto'; // Import Chart.js
+import Chart, { scales } from 'chart.js/auto';
 
 const Barchart = () => {
     const [timeRange, setTimeRange] = useState('1 month');
@@ -18,16 +18,12 @@ const Barchart = () => {
             {
                 label: 'Sales',
                 data: [10020, 19000, 3000, 52000, 12000, 3000, 2000, 1050, 8000, 700, 1004, 120],
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderColor: 'rgba(75, 192, 192, 1)',
-                borderWidth: 1,
+                backgroundColor: 'rgba(75, 192, 192)',
             },
             {
                 label: 'Purchases',
                 data: [10520, 22000, 6000, 56000, 18000, 4000, 3000, 2500, 8200, 2000, 1200, 5000],
-                backgroundColor: 'rgba(153, 102, 255, 0.2)',
-                borderColor: 'rgba(153, 102, 255, 1)',
-                borderWidth: 1,
+                backgroundColor: 'rgba(153, 102, 255)',
             },
         ],
     };
@@ -76,7 +72,6 @@ const Barchart = () => {
     };
 
     useEffect(() => {
-        // Initialize Chart.js once when the component mounts
         Chart.defaults.font.family = 'Arial';
     }, []);
 

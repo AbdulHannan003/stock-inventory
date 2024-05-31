@@ -9,6 +9,10 @@ import EditInvoice from "./pages/EditInvoice"
 import CreateInvoice from "./pages/CreateInvoice"
 import Expenses from "./pages/Expenses"
 import CreateExpense from "./pages/CreateExpense"
+import Inventory from "./pages/Inventory"
+import AddInventory from "./pages/AddInventory"
+import OrderList from "./pages/OrderList"
+import ViewOrder from "./pages/ViewOrder"
 
 function App() {
 
@@ -31,12 +35,15 @@ function App() {
                 <Route path="/invoices/new" element={<CreateInvoice />} />
                 <Route path="/expenses" element={<Expenses />} />
                 <Route path="/expenses/new" element={<CreateExpense />} />
+                <Route path="/inv" element={<Inventory />} />
+                <Route path="/inv/new" element={<AddInventory />} />
+                <Route path="/orders" element={<OrderList />} />
+                <Route path="/orders/:id" element={<ViewOrder />} />
               </Routes>
             </div>
           </div>
         </div>
       </Router>
-
     </>
   )
 }

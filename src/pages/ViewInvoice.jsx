@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
-import { AiOutlineArrowLeft } from "react-icons/ai";
-import { AiOutlinePrinter } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlinePrinter } from "react-icons/ai";
 
 const ViewInvoice = () => {
     const { id } = useParams();
@@ -18,18 +17,29 @@ const ViewInvoice = () => {
                     customer: `Customer ${response.data.userId}`,
                     amount: parseFloat((Math.random() * 1000).toFixed(2)),
                     paid: parseFloat((Math.random() * 500).toFixed(2)),
-                    status: ['paid', 'pending', 'overdue'][Math.floor(Math.random() * 3)],
-                    product: [
-                        'Product1', 'Product2', 'Product3', 'Product4', 'Product5', 'Product6',
-                        'Product7', 'Product8', 'Product9', 'Product10', 'Product11', 'Product12'
-                    ][Math.floor(Math.random() * 3)],
-                    quantity: Math.floor(Math.random() * 100),
+                    status: ['Paid', 'Pending', 'Overdue'][Math.floor(Math.random() * 3)],
+                    items: [
+                        {
+                            product: 'Product1',
+                            quantity: Math.floor(Math.random() * 10) + 1,
+                            unitPrice: parseFloat((Math.random() * 100).toFixed(2))
+                        },
+                        {
+                            product: 'Product2',
+                            quantity: Math.floor(Math.random() * 10) + 1,
+                            unitPrice: parseFloat((Math.random() * 100).toFixed(2))
+                        }
+                    ],
                     // Add more properties as needed
                 };
                 setInvoice(invoiceData);
             })
             .catch(error => console.error('Error fetching invoice:', error));
     }, [id]);
+
+    const handlePrint = () => {
+        window.print();
+    };
 
     if (!invoice) {
         return <div>Loading...</div>;
@@ -45,13 +55,35 @@ const ViewInvoice = () => {
                 <p className='text-lg'><strong>Amount:</strong> ${invoice.amount.toFixed(2)}</p>
                 <p className='text-lg'><strong>Paid:</strong> ${invoice.paid.toFixed(2)}</p>
                 <p className='text-lg'><strong>Status:</strong> {invoice.status}</p>
-                <p className='text-lg'><strong>Product:</strong> {invoice.product}</p>
-                <p className='text-lg'><strong>Quantity:</strong> {invoice.quantity}</p>
-                {/* Add more properties as needed */}
+                <h2 className='text-xl font-semibold mt-4'>Items</h2>
+                <table className='w-full text-left border mt-2'>
+                    <thead>
+                        <tr className='bg-gray-100'>
+                            <th className='p-2 border-r'>Product</th>
+                            <th className='p-2 border-r'>Quantity</th>
+                            <th className='p-2 border-r'>Unit Price</th>
+                            <th className='p-2'>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {invoice.items.map((item, index) => (
+                            <tr key={index} className='border-t'>
+                                <td className='p-2 border-r'>{item.product}</td>
+                                <td className='p-2 border-r'>{item.quantity}</td>
+                                <td className='p-2 border-r'>${item.unitPrice.toFixed(2)}</td>
+                                <td className='p-2'>${(item.unitPrice * item.quantity).toFixed(2)}</td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
             </div>
             <div className='mt-4 flex justify-between'>
-                <Link to='/invoices' className='text-sm px-2 items-center rounded text-white bg-secondary border-secondary-dark flex w-auto'><i className='pr-1'><AiOutlineArrowLeft /></i>Back to Invoices</Link>
-                <Link className='text-sm px-2 items-center rounded text-white bg-secondary border-secondary-dark flex w-auto'> <i className='pr-1'><AiOutlinePrinter /></i> Print</Link>
+                <Link to='/invoices' className='text-sm px-2 items-center rounded text-white bg-secondary border-secondary-dark flex w-auto'>
+                    <AiOutlineArrowLeft className='pr-1' />Back to Invoices
+                </Link>
+                <button onClick={handlePrint} className='text-sm px-2 items-center rounded text-white bg-secondary border-secondary-dark flex w-auto'>
+                    <AiOutlinePrinter className='pr-1' /> Print
+                </button>
             </div>
         </div>
     );
