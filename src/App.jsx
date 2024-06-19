@@ -17,6 +17,7 @@ import EditInventory from "./pages/EditInventory";
 import { InvoiceProvider } from './pages/InvoiceContext';
 import EditOrder from "./pages/EditOrder";
 import CreateOrder from "./pages/CreateOrder";
+import AdvancedReporting from "./pages/AdvancedReporting";
 
 function App() {
   return (
@@ -49,6 +50,7 @@ function App() {
                       <Route path="/orders/:id" element={<ViewOrder />} />
                       <Route path="/orders/edit/:id" element={<EditOrder />} />
                       <Route path="/orders/new" element={<CreateOrder />} />
+                      <Route path="/reports" element={<AdvancedReporting />} />
                     </Routes>
                   </div>
                 </div>

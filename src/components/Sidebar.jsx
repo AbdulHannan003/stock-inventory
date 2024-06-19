@@ -1,10 +1,9 @@
 import React from 'react'
-import { AiFillHome } from "react-icons/ai";
-import { TbReportSearch } from "react-icons/tb";
 import { Link, useLocation } from 'react-router-dom';
+import { TbReportSearch, TbTruckDelivery } from "react-icons/tb";
+import { AiFillHome, AiOutlineReconciliation } from "react-icons/ai";
 import { GiExpense } from "react-icons/gi";
 import { MdOutlineInventory2 } from "react-icons/md";
-import { TbTruckDelivery } from "react-icons/tb";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -40,6 +39,11 @@ const Sidebar = () => {
           <li className={location.pathname === "/orders" ? " bg-secondary-dark text-white text-lg p-2 rounded-l-2xl transition duration-300" : "text-white text-lg p-2"}>
             <Link to="/orders" className='flex items-center gap-x-2'>
               <i className='text-secondary-light'><TbTruckDelivery /></i> Orders
+            </Link>
+          </li>
+          <li className={location.pathname === "/report" ? " bg-secondary-dark text-white text-lg p-2 rounded-l-2xl transition duration-300" : "text-white text-lg p-2"}>
+            <Link to="/reports" className='flex items-center gap-x-2'>
+              <i className='text-secondary-light'><AiOutlineReconciliation /></i> Financial Reporting
             </Link>
           </li>
         </ul>
