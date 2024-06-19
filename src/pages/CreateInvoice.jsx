@@ -40,7 +40,7 @@ const CreateInvoice = () => {
     ];
 
     return (
-        <CreateForm formTitle="Create New Invoice" formFields={invoiceFormFields} onSubmit={handleSubmit} />
+        <CreateForm formTitle="New Invoice" formFields={invoiceFormFields} onSubmit={handleSubmit} />
     );
 };
 

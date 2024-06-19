@@ -1,15 +1,19 @@
 import React from 'react';
-import { Pie } from 'react-chartjs-2';
-import Chart from 'chart.js/auto'; // Import Chart.js
+import { Doughnut } from 'react-chartjs-2';
+import Chart from 'chart.js/auto';
 
-const Piechart = () => {
-    // Sample data (you can replace this with your dynamic data)
+const DoughnutChart = ({ inventory }) => {
+    const categories = [...new Set(inventory.map(item => item.category))];
+    const categorySales = categories.map(category => {
+        const categoryItems = inventory.filter(item => item.category === category);
+        return categoryItems.reduce((total, item) => total + (item.price * item.quantity), 0).toFixed(2);
+    });
+
     const data = {
-        labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+        labels: categories,
         datasets: [
             {
-                label: '# of Votes',
-                data: [12, 19, 3, 5, 2, 3],
+                data: categorySales,
                 backgroundColor: [
                     'rgba(255, 99, 132)',
                     'rgba(54, 162, 235)',
@@ -38,16 +42,13 @@ const Piechart = () => {
     return (
         <div className='bg-white rounded-lg border'>
             <div className='flex items-center justify-between mx-auto p-4 bg-gray-100 rounded-lg shadow-md'>
-                <h1 className='text-lg font-bold'>Votes Distribution</h1>
+                <h1 className='text-lg font-bold'>Sales Distribution by Category</h1>
             </div>
             <div className='h-[315px] p-4'>
-                <Pie
-                    data={data}
-                    options={options}
-                />
+                <Doughnut data={data} options={options} />
             </div>
         </div>
     );
 };
 
-export default Piechart;
+export default DoughnutChart;

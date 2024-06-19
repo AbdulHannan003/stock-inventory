@@ -1,38 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { InvoiceContext } from './InvoiceContext';
 
 const EditInvoice = () => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const [invoice, setInvoice] = useState({
-        invoiceNumber: '',
-        date: '',
-        customer: '',
-        amount: '',
-        paid: '',
-        status: '',
-        product: '',
-        quantity: ''
-    });
+    const { getInvoiceById, updateInvoice } = useContext(InvoiceContext);
+    const [invoice, setInvoice] = useState(null);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        axios.get(`https://jsonplaceholder.typicode.com/posts/${id}`)
-            .then(response => {
-                const invoiceData = {
-                    invoiceNumber: response.data.id,
-                    date: new Date().toLocaleDateString(),
-                    customer: `Customer ${response.data.userId}`,
-                    amount: parseFloat((Math.random() * 1000).toFixed(2)),
-                    paid: parseFloat((Math.random() * 500).toFixed(2)),
-                    status: ['paid', 'pending', 'overdue'][Math.floor(Math.random() * 3)],
-                    product: `Product${Math.floor(Math.random() * 10) + 1}`,
-                    quantity: Math.floor(Math.random() * 100)
-                };
-                setInvoice(invoiceData);
-            })
-            .catch(error => console.error('Error fetching invoice:', error));
-    }, [id]);
+        const invoiceData = getInvoiceById(id);
+        console.log(invoiceData);
+        if (invoiceData) {
+            setInvoice(invoiceData);
+            setLoading(false);
+        } else {
+            setLoading(false);
+            console.error('Invoice not found');
+        }
+    }, [id, getInvoiceById]);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -42,16 +29,29 @@ const EditInvoice = () => {
         }));
     };
 
+    const handleItemChange = (index, e) => {
+        const { name, value } = e.target;
+        const items = [...invoice.items];
+        items[index][name] = value;
+        setInvoice(prevState => ({
+            ...prevState,
+            items
+        }));
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
-        // Here you would typically send the updated invoice data to the server
-        axios.put(`https://jsonplaceholder.typicode.com/posts/${id}`, invoice)
-            .then(response => {
-                console.log('Invoice updated:', response.data);
-                navigate(`/invoices`);
-            })
-            .catch(error => console.error('Error updating invoice:', error));
+        updateInvoice(invoice);
+        navigate(`/invoices`);
     };
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!invoice) {
+        return <div>Invoice not found</div>;
+    }
 
     return (
         <div className='p-4 bg-white rounded-lg shadow-md w-2/3 mx-auto'>
@@ -122,33 +122,42 @@ const EditInvoice = () => {
                         onChange={handleChange}
                         className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
                     >
-                        <option value='paid'>Paid</option>
-                        <option value='pending'>Pending</option>
-                        <option value='overdue'>Overdue</option>
+                        <option value='Paid'>Paid</option>
+                        <option value='Pending'>Pending</option>
+                        <option value='Overdue'>Overdue</option>
                     </select>
                 </div>
-                <div className='mb-4'>
-                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='product'>Product</label>
-                    <input
-                        type='text'
-                        name='product'
-                        id='product'
-                        value={invoice.product}
-                        onChange={handleChange}
-                        className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                    />
-                </div>
-                <div className='mb-4'>
-                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='quantity'>Quantity</label>
-                    <input
-                        type='text'
-                        name='quantity'
-                        id='quantity'
-                        value={invoice.quantity}
-                        onChange={handleChange}
-                        className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
-                    />
-                </div>
+                {invoice.items.map((item, index) => (
+                    <div key={index} className='mb-4'>
+                        <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor={`product${index}`}>Product</label>
+                        <input
+                            type='text'
+                            name='product'
+                            id={`product${index}`}
+                            value={item.product}
+                            onChange={e => handleItemChange(index, e)}
+                            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                        />
+                        <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor={`quantity${index}`}>Quantity</label>
+                        <input
+                            type='number'
+                            name='quantity'
+                            id={`quantity${index}`}
+                            value={item.quantity}
+                            onChange={e => handleItemChange(index, e)}
+                            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                        />
+                        <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor={`unitPrice${index}`}>Unit Price</label>
+                        <input
+                            type='number'
+                            name='unitPrice'
+                            id={`unitPrice${index}`}
+                            value={item.unitPrice}
+                            onChange={e => handleItemChange(index, e)}
+                            className='shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline'
+                        />
+                    </div>
+                ))}
                 <div className='flex items-center justify-between'>
                     <button
                         type='submit'

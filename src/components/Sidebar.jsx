@@ -4,6 +4,7 @@ import { TbReportSearch } from "react-icons/tb";
 import { Link, useLocation } from 'react-router-dom';
 import { GiExpense } from "react-icons/gi";
 import { MdOutlineInventory2 } from "react-icons/md";
+import { TbTruckDelivery } from "react-icons/tb";
 
 const Sidebar = () => {
   const location = useLocation();
@@ -38,7 +39,7 @@ const Sidebar = () => {
           </li>
           <li className={location.pathname === "/orders" ? " bg-secondary-dark text-white text-lg p-2 rounded-l-2xl transition duration-300" : "text-white text-lg p-2"}>
             <Link to="/orders" className='flex items-center gap-x-2'>
-              <i className='text-secondary-light'><MdOutlineInventory2 /></i> Orders
+              <i className='text-secondary-light'><TbTruckDelivery /></i> Orders
             </Link>
           </li>
         </ul>

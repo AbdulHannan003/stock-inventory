@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import Dropdown from './Dropdown';
-import Chart, { scales } from 'chart.js/auto';
+import Chart from 'chart.js/auto';
 
-const Barchart = () => {
+const LineChart = ({ inventory }) => {
     const [timeRange, setTimeRange] = useState('1 month');
 
     const handleSelect = (range) => {
@@ -11,53 +11,33 @@ const Barchart = () => {
         // Logic to update the data based on range
     };
 
-    // Sample data (you can replace this with your dynamic data)
+    const labels = inventory.map(item => item.name);
+    const salesData = inventory.map(item => item.price * item.quantity);
+    const purchaseData = salesData.map(value => value * 0.75); // assuming 75% of sales as purchases for illustration
+
     const data = {
-        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        labels,
         datasets: [
             {
                 label: 'Sales',
-                data: [10020, 19000, 3000, 52000, 12000, 3000, 2000, 1050, 8000, 700, 1004, 120],
-                backgroundColor: 'rgba(75, 192, 192)',
+                data: salesData,
+                borderColor: 'rgba(75, 192, 192)',
+                fill: false,
+                tension: 0.1,
             },
             {
                 label: 'Purchases',
-                data: [10520, 22000, 6000, 56000, 18000, 4000, 3000, 2500, 8200, 2000, 1200, 5000],
-                backgroundColor: 'rgba(153, 102, 255)',
+                data: purchaseData,
+                borderColor: 'rgba(153, 102, 255)',
+                fill: false,
+                tension: 0.1,
             },
         ],
     };
 
     const options = {
-        scales: {
-
-        },
-        plugins: {
-            colors: {
-                enabled: false
-            },
-        },
         responsive: true,
         maintainAspectRatio: false,
-        indexAxis: 'x',
-        elements: {
-            bar: {
-                borderWidth: 2,
-            },
-        },
-        responsiveAnimationDuration: 1,
-        title: {
-            display: false,
-        },
-        legend: {
-            display: false,
-        },
-        layout: {
-            padding: 0
-        },
-        animation: {
-            duration: 0
-        },
         scales: {
             y: {
                 beginAtZero: true,
@@ -68,7 +48,6 @@ const Barchart = () => {
                 },
             }
         },
-
     };
 
     useEffect(() => {
@@ -82,10 +61,10 @@ const Barchart = () => {
                 <Dropdown onSelect={handleSelect} />
             </div>
             <div className='h-[300px] p-4'>
-                <Bar data={data} options={options} />
+                <Line data={data} options={options} />
             </div>
-        </div >
+        </div>
     );
 };
 
-export default Barchart;
+export default LineChart;

@@ -30,7 +30,7 @@ const CreateExpense = () => {
     ];
 
     return (
-        <CreateForm formTitle="Create New Expense" formFields={ExpenseFormFields} onSubmit={handleSubmit} />
+        <CreateForm formTitle="New Expense" formFields={ExpenseFormFields} onSubmit={handleSubmit} />
     );
 };
 
