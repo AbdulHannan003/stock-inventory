@@ -36,16 +36,16 @@ const Invoice = () => {
 
     const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-    const totalAmount = filteredInvoices.reduce((total, invoice) => total + invoice.amount, 0).toFixed(2);
-    const totalPaid = filteredInvoices.reduce((total, invoice) => total + invoice.paid, 0).toFixed(2);
-    const totalDue = filteredInvoices.reduce((total, invoice) => total + (invoice.amount - invoice.paid), 0).toFixed(2);
+    const totalAmount = filteredInvoices.reduce((total, invoice) => total + parseFloat(invoice.amount), 0).toFixed(2);
+    const totalPaid = filteredInvoices.reduce((total, invoice) => total + parseFloat(invoice.paid), 0).toFixed(2);
+    const totalDue = filteredInvoices.reduce((total, invoice) => total + (parseFloat(invoice.amount) - parseFloat(invoice.paid)), 0).toFixed(2);
     const totalOverdue = filteredInvoices
         .filter(invoice => invoice.status === 'overdue')
-        .reduce((total, invoice) => total + (invoice.amount - invoice.paid), 0)
+        .reduce((total, invoice) => total + (parseFloat(invoice.amount) - parseFloat(invoice.paid)), 0)
         .toFixed(2);
     const totalPending = filteredInvoices
         .filter(invoice => invoice.status === 'pending')
-        .reduce((total, invoice) => total + (invoice.amount - invoice.paid), 0)
+        .reduce((total, invoice) => total + (parseFloat(invoice.amount) - parseFloat(invoice.paid)), 0)
         .toFixed(2);
 
     const deleteInvoice = (invoiceId) => {

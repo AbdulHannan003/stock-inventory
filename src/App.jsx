@@ -18,6 +18,7 @@ import { InvoiceProvider } from './pages/InvoiceContext';
 import EditOrder from "./pages/EditOrder";
 import CreateOrder from "./pages/CreateOrder";
 import AdvancedReporting from "./pages/AdvancedReporting";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
@@ -35,6 +36,7 @@ function App() {
                 <div className='w-full'>
                   <Navbar />
                   <div className='w-full flex justify-around gap-x-4 p-4'>
+                    <div><Toaster /></div>
                     <Routes>
                       <Route path="/" element={<Home />} />
                       <Route path="/invoices" element={<Invoice />} />

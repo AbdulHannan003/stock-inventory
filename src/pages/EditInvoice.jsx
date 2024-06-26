@@ -11,7 +11,6 @@ const EditInvoice = () => {
 
     useEffect(() => {
         const invoiceData = getInvoiceById(id);
-        console.log(invoiceData);
         if (invoiceData) {
             setInvoice(invoiceData);
             setLoading(false);
@@ -94,7 +93,7 @@ const EditInvoice = () => {
                 <div className='mb-4'>
                     <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='amount'>Amount</label>
                     <input
-                        type='text'
+                        type='number'
                         name='amount'
                         id='amount'
                         value={invoice.amount}
@@ -105,7 +104,7 @@ const EditInvoice = () => {
                 <div className='mb-4'>
                     <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='paid'>Paid</label>
                     <input
-                        type='text'
+                        type='number'
                         name='paid'
                         id='paid'
                         value={invoice.paid}
